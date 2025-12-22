@@ -1,3 +1,4 @@
+import Layout from "./components/layout/Layout.tsx";
 
 
 function App() {
@@ -5,7 +6,9 @@ function App() {
 
   return (
       <>
-
+<Layout>
+    test
+</Layout>
       </>
   )
 }
