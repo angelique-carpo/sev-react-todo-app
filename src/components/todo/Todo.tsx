@@ -2,6 +2,7 @@ import {useState, useRef, useEffect} from "react";
 import TodoForm from "./TodoForm.tsx";
 import TodoList from "./TodoList.tsx";
 import type { TodoProps } from "../../types";
+import Button from "../UI/Button.tsx";
 
 const Todo = () => {
     const [todos, setTodos] = useState<TodoProps[]>([]);
@@ -30,18 +31,38 @@ const Todo = () => {
                 todo.id === id? {...todo, completed: !todo.completed}: todo))
     }
 
+    const clearAllTodos = () => {
+        setTodos([]);
+    }
+
     useEffect(() => {
         inputRef.current?.focus();
     }, [todos]);
+
+    const totalTask = todos.length;
+    const completedTask = todos.filter(t => t.completed).length;
+    const activeTask =totalTask - completedTask;
 
     return (
         <>
             <div className="max-w-sm mx-auto">
                 <h1 className="text-center text-2xl py-8">To-Do List</h1>
                 <TodoForm addTodo={addTodo} inputRef={inputRef} />
-                {/*<TodoList todos={todos} editTodo={editTodo}/>*/}
                 <TodoList todos={todos} editTodo={editTodo} deleteTodo={deleteTodo} toggleTodo={toggleTodo} />
 
+                {totalTask >0 && (
+                    <>
+                {/*        TODO: add this to another component */}
+                <div className="flex justify-between border-t pt-2 mt-4 text-cf-gray">
+                    <span>Total:{totalTask}</span>
+                    <span>Active:{activeTask}</span>
+                    <span>Completed:{completedTask}</span>
+                </div>
+                        <div className="text-end mt-4">
+                    <Button addClasses = "bg-cf-dark-red" label="Clear All" onClick={clearAllTodos}/>
+                        </div>
+                    </>
+                )}
             </div>
         </>
     )
